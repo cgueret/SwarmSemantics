@@ -1,14 +1,9 @@
 package nl.vu.swarm;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.semanticweb.yars.nx.Node;
 
 public class GraphNode {
 	private final Node node;
-	private final Set<GraphEdge> edges = new HashSet<GraphEdge>();
 
 	/**
 	 * @param node
@@ -17,46 +12,39 @@ public class GraphNode {
 		this.node = node;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
 		return node.toN3();
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#hashCode()
-	 */
+
 	@Override
 	public int hashCode() {
-		return node.hashCode();
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((node == null) ? 0 : node.hashCode());
+		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
 	@Override
 	public boolean equals(Object obj) {
-		return node.equals(obj);
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		GraphNode other = (GraphNode) obj;
+		if (node == null) {
+			if (other.node != null)
+				return false;
+		} else if (!node.equals(other.node))
+			return false;
+		return true;
 	}
 
-	/**
-	 * @param target
-	 * @param label
-	 */
-	public void connectTo(GraphNode target, Node label) {
-		edges.add(new GraphEdge(label, target));
-	}
-
-	/**
-	 * @return
-	 */
-	public Collection<GraphEdge> edges() {
-		return edges;
-	}
 }

@@ -3,14 +3,16 @@ package nl.vu.swarm;
 import org.semanticweb.yars.nx.Node;
 
 public class GraphEdge {
-	private final GraphNode target;
-	private final Node label;
+	protected final GraphNode source;
+	protected final GraphNode target;
+	protected final Node label;
 
 	/**
 	 * @param label
 	 * @param target
 	 */
-	public GraphEdge(Node label, GraphNode target) {
+	public GraphEdge(GraphNode source, Node label, GraphNode target) {
+		this.source = source;
 		this.label = label;
 		this.target = target;
 	}
@@ -34,6 +36,11 @@ public class GraphEdge {
 				return false;
 		} else if (!label.equals(other.label))
 			return false;
+		if (source == null) {
+			if (other.source != null)
+				return false;
+		} else if (!source.equals(other.source))
+			return false;
 		if (target == null) {
 			if (other.target != null)
 				return false;
@@ -42,6 +49,14 @@ public class GraphEdge {
 		return true;
 	}
 
+	public GraphNode getSource() {
+		return source;
+	}
+
+	public Node getLabel() {
+		return label;
+	}
+	
 	/**
 	 * @return
 	 */
@@ -59,6 +74,7 @@ public class GraphEdge {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((label == null) ? 0 : label.hashCode());
+		result = prime * result + ((source == null) ? 0 : source.hashCode());
 		result = prime * result + ((target == null) ? 0 : target.hashCode());
 		return result;
 	}
@@ -70,7 +86,15 @@ public class GraphEdge {
 	 */
 	@Override
 	public String toString() {
-		return label.toN3();
+		return source.toString() + " " + label.toN3() + " " + target.toString();
+	}
+
+	/**
+	 * @param location
+	 * @return
+	 */
+	public GraphNode getOtherEnd(GraphNode location) {
+		return (location == source ? target : source);
 	}
 
 }
